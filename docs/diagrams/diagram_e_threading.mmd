@@ -1,0 +1,41 @@
+flowchart TB
+    %% Diagram E: Threading model
+    subgraph EDT ["Swing Event Dispatch Thread"]
+        direction TB
+        Timer[javax.swing.Timer<br/>fires every 33 ms (30 FPS)]
+        Repaint[frame.repaint()<br/>schedules paint()]
+        Paint[GameFrame.paint()<br/>draws screen, preview,<br/>score, timer, target]
+        Timer --> Repaint --> Paint
+    end
+
+    subgraph VT ["Vision thread<br/>(Thread daemon, \"pose-perfect-vision\")"]
+        direction TB
+        Loop[while (running)<br/>visionLoop()]
+        Read[camera.read()]
+        Detect[detector.detect()<br/>ONNX inference x2]
+        Classify[classifier.classify()<br/>ONNX inference]
+        Update[session.update()<br/>game logic]
+        Sleep[sleep 33ms<br/>frame pacing]
+        Loop --> Read --> Detect --> Classify --> Update --> Sleep --> Loop
+    end
+
+    subgraph Shared["Thread-safe shared state (volatile / Atomic)"]
+        direction TB
+        Preview[AtomicReference<BufferedImage><br/>latest camera frame]
+        Landmarks[AtomicReference<PoseLandmarks><br/>latest detection]
+        Failed[AtomicBoolean<br/>detectionFailed]
+        Screen[volatile Screen enum<br/>HOME/START/GAME/GAME_OVER]
+    end
+
+    VT -.-> |writes| Preview
+    VT -.-> |writes| Landmarks
+    VT -.-> |writes| Failed
+    VT -.-> |reads/writes| Screen
+    EDT -.-> |reads| Preview
+    EDT -.-> |reads| Landmarks
+    EDT -.-> |reads| Failed
+    EDT -.-> |reads| Screen
+
+    style EDT fill:#e8f5e9,stroke:#2e7d32
+    style VT fill:#e3f2fd,stroke:#1565c0
+    style Shared fill:#fff3e0,stroke:#ef6c00

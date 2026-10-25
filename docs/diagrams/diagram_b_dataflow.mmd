@@ -1,0 +1,35 @@
+flowchart TB
+    %% Diagram B: End-to-End Data Flow
+    direction TB
+    subgraph Capture ["1. Webcam capture"]
+        WM[(Webcam)] --> WC[WebcamCapture.read()<br/>OpenCV Mat, BGR, 800x100]
+    end
+
+    subgraph Detect ["2. Pose detection"]
+        WC --> FLIP[Core.flip(frame, 1)<br/>mirror image]
+        FLIP --> PD[MediapipePoseDetector.detect()<br/>person detector ONNX (224x224)<br/>+ pose landmarker ONNX (256x256)]
+        PD --> LM[PoseLandmarks<br/>33 landmarks, x/y/visibility<br/>normalised 0..1]
+    end
+
+    subgraph Preprocess ["3. Landmark preprocessing"]
+        LM --> FV[PoseLandmarks.toFeatureVector()<br/>66 floats:<br/>(x - noseX, y - noseY)<br/>interleaved x,y per landmark]
+    end
+
+    subgraph Classify ["4. ONNX classification"]
+        FV --> OP[OnnxPoseClassifier.classify()<br/>input tensor [1, 66]<br/>softmax over 16 classes<br/>argmax -> label index]
+        OP --> PP[Predicted pose label<br/>e.g. "Tpose", "warriorpose"]
+    end
+
+    subgraph Game ["5. Game logic"]
+        PP --> GS[GameSession.update(now, predicted, bodyVisible)<br/>compare to target pose<br/>score++ and +1.5s on match<br/>target changes every 7s]
+    end
+
+    subgraph UI ["6. UI update (EDT, 30 FPS)"]
+        GS --> REP[GameFrame.repaint()<br/>paintGame() draws:<br/>camera preview, target pose image,<br/>score, timer, "whole body visible" alert]
+    end
+
+    style WM fill:#e1f5e1,stroke:#2e7d32
+    style PD fill:#e3f2fd,stroke:#1565c0
+    style FV fill:#fff3e0,stroke:#ef6c00
+    style OP fill:#fce4ec,stroke:#c2185b
+    style REP fill:#f3e5f5,stroke:#7b1fa2

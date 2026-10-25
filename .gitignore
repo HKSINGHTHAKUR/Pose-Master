@@ -1,0 +1,23 @@
+# Maven build output
+target/
+
+# Python virtual environments and caches
+.venv*/
+__pycache__/
+*.pyc
+
+# IDE (the already-tracked .idea files stay tracked)
+.idea/workspace.xml
+.idea/shelf/
+*.iml
+
+# OS junk and logs
+.DS_Store
+Thumbs.db
+*.log
+
+# Local secrets
+.env
+
+# tools/_probe: unreferenced scratch experiments (~37 MB of third-party demo code and model copies)
+tools/_probe/

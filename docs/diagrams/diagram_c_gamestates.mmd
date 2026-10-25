@@ -1,0 +1,21 @@
+stateDiagram-v2
+    %% Diagram C: Game state transitions
+    [*] --> HOME
+    HOME --> START : Start button clicked
+    START --> HOME : Back button clicked
+    START --> GAME : Start button clicked<br/>(new GameSession, timer starts)
+    GAME --> GAME_OVER : Timer reaches 0<br/>or QUIT button clicked
+    GAME_OVER --> START : Play Again clicked<br/>(new GameSession)
+    GAME_OVER --> HOME : Main Menu clicked
+
+    state GAME {
+        [*] --> WaitingForPose
+        WaitingForPose --> WaitingForPose : target stable (up to 7s)
+        WaitingForPose --> WaitingForPose : match! score++, new target
+        WaitingForPose --> [*] : game finished
+    }
+
+    note right of HOME : Main menu<br/>Start / Quit buttons
+    note right of START : Webcam preview<br/>high score shown
+    note right of GAME : 60s timer,<br/>target pose changes every 7s<br/>+1.5s per match
+    note right of GAME_OVER : Final score, time played,<br/>high score, time/move

@@ -1,0 +1,58 @@
+flowchart TB
+    %% Diagram A: System Architecture
+    subgraph App ["Pose Perfect Application"]
+        direction TB
+        AppEntry[PosePerfectApp<br/>main() - entry point] --> RL[ResourceLocator<br/>locates models, labels, assets]
+        AppEntry --> HSS[HighScoreStore<br/>~/.pose_master/high_score.txt]
+        AppEntry --> OCV[OpenCV native lib<br/>nu.pattern.OpenCV.loadLocally()]
+        AppEntry --> GF[GameFrame<br/>Swing JFrame, EDT]
+    end
+
+    subgraph Vision ["Vision pipeline (background thread)"]
+        direction TB
+        WC[WebcamCapture<br/>OpenCV VideoCapture<br/>800x100 frame] --> PD[MediapipePoseDetector<br/>person detector + pose landmarker<br/>ONNX Runtime]
+        PD --> PL[PoseLandmarks<br/>33 landmarks, 66-feature vector]
+        PL --> PC[OnnxPoseClassifier<br/>66 -> 128 -> 64 -> 16<br/>softmax output]
+    end
+
+    subgraph Game ["Game logic (pure Java, testable)"]
+        direction TB
+        GS[GameSession<br/>60s timer, +1.5s/match,<br/>target changes every 7s]
+    end
+
+    subgraph UI ["User interface (Swing EDT)"]
+        direction TB
+        GFF[GameFrame screens:<br/>HOME / START / GAME /<br/>GAME_OVER]
+        AS[Assets<br/>images, fonts, cached]
+    end
+
+    subgraph Resources ["Bundled resources (classpath)"]
+        direction TB
+        CM[models/pose_classifier.onnx]
+        PDM[models/person_detection_mediapipe_2023mar.onnx]
+        PLM[models/pose_estimation_mediapipe_2023mar.onnx]
+        LBL[labels.npy - 16 pose labels]
+        IMG[poseImages/*.png +<br/>Background_Images + Fonts]
+    end
+
+    GF <--> |mouse clicks| UI
+    GF --> |runs visionLoop| Vision
+    GF --> |updates| Game
+    Game --> |score, target, time| UI
+    PC -.-> |predicted pose| Game
+    RL -.-> |resolves paths| CM
+    RL -.-> |resolves paths| PDM
+    RL -.-> |resolves paths| PLM
+    RL -.-> |resolves paths| LBL
+    RL -.-> |resolves paths| IMG
+    AppEntry --> |constructs| GF
+    AppEntry --> |constructs| WC
+    AppEntry --> |constructs| PD
+    AppEntry --> |constructs| PC
+    AppEntry --> |constructs| HSS
+
+    style AppEntry fill:#e1f5e1,stroke:#2e7d32
+    style GF fill:#fff3e0,stroke:#ef6c00
+    style Vision fill:#e3f2fd,stroke:#1565c0
+    style Game fill:#fce4ec,stroke:#c2185b
+    style UI fill:#f3e5f5,stroke:#7b1fa2

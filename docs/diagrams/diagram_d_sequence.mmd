@@ -1,0 +1,34 @@
+sequenceDiagram
+    autonumber
+    participant VT as Vision Thread<br/>(visionLoop)
+    participant WC as WebcamCapture
+    participant PD as MediapipePoseDetector
+    participant OP as OnnxPoseClassifier
+    participant GS as GameSession
+    participant EDT as Swing EDT<br/>(javax.swing.Timer repaint)
+    participant GF as GameFrame.paint()
+
+    VT->>WC: read() (OpenCV Mat)
+    WC-->>VT: frame or null
+    alt frame == null
+        VT->>VT: detectionFailed = true
+        VT->>EDT: repaint() shows "No webcam detected"
+    else frame available
+        VT->>PD: detect(flipped frame)
+        PD-->>VT: PoseLandmarks or null
+        alt landmarks != null && bodyVisible
+            VT->>OP: classify(toFeatureVector())
+            OP-->>VT: predicted label
+        else
+            VT->>VT: predicted = null
+        end
+        alt screen == GAME
+            VT->>GS: update(now, predicted, bodyVisible)
+            GS-->>VT: (updates score/time/finished)
+            alt finished
+                VT->>GF: endGame() -> GAME_OVER screen
+            end
+        end
+    end
+    EDT->>GF: repaint() every 33ms (30 FPS)
+    GF->>GF: paint() draws current screen<br/>from preview, landmarks, session state
