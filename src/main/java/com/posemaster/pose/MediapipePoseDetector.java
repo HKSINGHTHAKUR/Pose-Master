@@ -22,8 +22,8 @@ import java.util.Map;
 /**
  * Detects body landmarks with the MediaPipe BlazePose models, running on ONNX Runtime.
  *
- * <p>This is the Java replacement for the Python {@code mediapipe.solutions.pose} pipeline the
- * original game used.  It runs the same two models the original MediaPipe graph used:
+ * <p>This is the Java replacement for the Python {@code mediapipe.solutions.pose} pipeline used
+ * by {@code Game.py}.  It runs the same two models as that MediaPipe graph:
  *
  * <ol>
  *   <li>the person detector, which locates the person and returns four body keypoints;</li>
@@ -32,7 +32,7 @@ import java.util.Map;
  * </ol>
  *
  * <p>The landmark ordering, the normalised-coordinate contract and the preprocessing all match
- * the original implementation, so the trained classifier keeps working unchanged.
+ * the Python version, so the trained classifier keeps working unchanged.
  */
 public final class MediapipePoseDetector implements PoseDetector {
 
@@ -401,7 +401,7 @@ public final class MediapipePoseDetector implements PoseDetector {
             float visibility = sigmoid(point[3]);
             float presence = sigmoid(point[4]);
 
-            // The original game consumed MediaPipe's normalised coordinates, where x is divided
+            // The Python version consumed MediaPipe's normalised coordinates, where x is divided
             // by the frame width and y by the frame height.  Keep that contract so the trained
             // classifier sees the same kind of feature vector it was fitted on.
             landmarks.add(new PoseLandmark((float) (frameX / frame.cols()),

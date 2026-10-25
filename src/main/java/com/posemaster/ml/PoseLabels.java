@@ -13,9 +13,9 @@ import java.util.Map;
 /**
  * Reads the label list that accompanies the trained pose-classification model.
  *
- * <p>The original project stored its labels in a NumPy {@code labels.npy} file holding a
- * one-dimensional array of fixed-width UTF-32 strings.  That format is still used here so the
- * original asset stays authoritative, but it is parsed directly instead of requiring NumPy.
+ * <p>The labels are stored in a NumPy {@code labels.npy} file holding a one-dimensional array of
+ * fixed-width UTF-32 strings.  The file is shared with the Python version, so it is parsed
+ * directly here instead of requiring NumPy.
  *
  * <p>Supported layouts: {@code <U<n>} (fixed-width unicode) and {@code <S<n>} (fixed-width
  * bytes), both little-endian and one-dimensional.  The file must be a version 1.0 or 2.0

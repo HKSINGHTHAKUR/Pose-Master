@@ -9,15 +9,15 @@ import java.util.Locale;
 /**
  * Webcam capture built on OpenCV.
  *
- * <p>Mirrors the original Python implementation: it tries a list of platform-appropriate capture
+ * <p>Mirrors the Python version: it tries a list of platform-appropriate capture
  * backends in turn and falls back to the default backend when none of them open the device.  The
  * capture is opened lazily on the first read so that constructing the object never blocks.
  */
 public final class WebcamCapture implements AutoCloseable {
 
-    /** Frame width requested from the camera, matching the original game. */
+    /** Frame width requested from the camera, matching the Python version. */
     public static final int REQUESTED_WIDTH = 800;
-    /** Frame height requested from the camera, matching the original game. */
+    /** Frame height requested from the camera, matching the Python version. */
     public static final int REQUESTED_HEIGHT = 100;
 
     private final int cameraIndex;

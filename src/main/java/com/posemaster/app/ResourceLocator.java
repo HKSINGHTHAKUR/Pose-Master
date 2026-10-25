@@ -11,7 +11,7 @@ import java.nio.file.Paths;
  *
  * <p>Resources are looked up on the classpath first, so the packaged jar works from any working
  * directory.  When running from a source checkout the sibling project directory is used, which
- * keeps the original repository layout working without duplicating the assets.
+ * keeps the repository's root-level asset layout working.
  */
 public final class ResourceLocator {
 
@@ -40,8 +40,8 @@ public final class ResourceLocator {
         if (Files.isDirectory(working.resolve("resources"))) {
             return working.resolve("resources");
         }
-        if (Files.isDirectory(working.resolve("Pose-Perfect"))) {
-            return working.resolve("Pose-Perfect");
+        if (Files.isDirectory(working.resolve("Pose-Master"))) {
+            return working.resolve("Pose-Master");
         }
         return working;
     }

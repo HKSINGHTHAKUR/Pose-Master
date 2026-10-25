@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * The rules of a single game session, independent of any UI.
  *
- * <p>Mirrors the original Python implementation:
+ * <p>Mirrors the Python version:
  *
  * <ul>
  *   <li>a session lasts 60 seconds, and every matched pose adds 1.5 seconds;</li>
@@ -121,7 +121,7 @@ public final class GameSession {
         if (bodyVisible && predictedPose != null && predictedPose.equals(targetPose)) {
             score++;
             levelStartTime = now;
-            // The pose changes on the next update, as in the original.
+            // The pose changes on the next update, as in the Python version.
             levelCompleted = true;
         }
 

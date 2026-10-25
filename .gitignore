@@ -6,9 +6,8 @@ target/
 __pycache__/
 *.pyc
 
-# IDE (the already-tracked .idea files stay tracked)
-.idea/workspace.xml
-.idea/shelf/
+# IDE settings
+.idea/
 *.iml
 
 # OS junk and logs

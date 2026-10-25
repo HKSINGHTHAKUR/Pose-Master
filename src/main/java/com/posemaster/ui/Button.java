@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 
 /**
- * A clickable button drawn the way the original pygame game drew them: a filled rectangle with
+ * A clickable button drawn the way the Python (pygame) version drew them: a filled rectangle with
  * an optional outline and centred text.
  */
 public final class Button {

@@ -19,23 +19,23 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * Entry point of Pose Perfect.
+ * Entry point of Pose Master.
  *
  * <p>The application loads the trained pose-classification model and the MediaPipe pose models,
  * opens the webcam and shows the game window.  No Python runtime is involved.
  */
-public final class PosePerfectApp {
+public final class PoseMasterApp {
 
-    /** Classifier model, exported from the original {@code model.h5}. */
+    /** Classifier model, exported from {@code model.h5}. */
     public static final String CLASSIFIER_MODEL = "models/pose_classifier.onnx";
-    /** Pose label list, the original {@code labels.npy}. */
+    /** Pose label list, {@code labels.npy}. */
     public static final String LABELS = "labels.npy";
     /** MediaPipe person detector. */
     public static final String PERSON_DETECTOR = "models/person_detection_mediapipe_2023mar.onnx";
     /** MediaPipe pose landmark model. */
     public static final String POSE_LANDMARKER = "models/pose_estimation_mediapipe_2023mar.onnx";
 
-    private PosePerfectApp() {
+    private PoseMasterApp() {
     }
 
     public static void main(String[] args) {
@@ -77,7 +77,7 @@ public final class PosePerfectApp {
                 timer.start();
             });
         } catch (IOException | ai.onnxruntime.OrtException e) {
-            System.err.println("Could not start Pose Perfect: " + e.getMessage());
+            System.err.println("Could not start Pose Master: " + e.getMessage());
             e.printStackTrace();
         }
     }

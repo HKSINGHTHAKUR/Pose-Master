@@ -1,8 +1,8 @@
 flowchart TB
     %% Diagram A: System Architecture
-    subgraph App ["Pose Perfect Application"]
+    subgraph App ["Pose Master Application"]
         direction TB
-        AppEntry[PosePerfectApp<br/>main() - entry point] --> RL[ResourceLocator<br/>locates models, labels, assets]
+        AppEntry[PoseMasterApp<br/>main() - entry point] --> RL[ResourceLocator<br/>locates models, labels, assets]
         AppEntry --> HSS[HighScoreStore<br/>~/.pose_master/high_score.txt]
         AppEntry --> OCV[OpenCV native lib<br/>nu.pattern.OpenCV.loadLocally()]
         AppEntry --> GF[GameFrame<br/>Swing JFrame, EDT]

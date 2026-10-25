@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.posemaster</groupId>
-  <artifactId>pose-perfect</artifactId>
+  <artifactId>pose-master</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>Pose Perfect</name>
+  <name>Pose Master</name>
   <description>Real-time webcam pose recognition game (Java / Swing / OpenCV / ONNX Runtime)</description>
 
   <properties>
@@ -51,7 +51,7 @@
   </dependencies>
 
   <build>
-    <finalName>pose-perfect</finalName>
+    <finalName>pose-master</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -80,7 +80,7 @@
               <createDependencyReducedPom>false</createDependencyReducedPom>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.posemaster.PosePerfectApp</mainClass>
+                  <mainClass>com.posemaster.PoseMasterApp</mainClass>
                 </transformer>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
               </transformers>

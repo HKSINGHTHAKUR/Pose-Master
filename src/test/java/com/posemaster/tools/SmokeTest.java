@@ -1,6 +1,6 @@
 package com.posemaster.tools;
 
-import com.posemaster.PosePerfectApp;
+import com.posemaster.PoseMasterApp;
 import com.posemaster.app.HighScoreStore;
 import com.posemaster.app.ResourceLocator;
 import com.posemaster.camera.WebcamCapture;
@@ -26,8 +26,8 @@ import java.nio.file.Paths;
  * Headless smoke test: loads every model and asset, runs the full pose pipeline on a still
  * image, renders the game's screens to PNG files and reports the results.
  *
- * <p>Run with:
- * <pre>java -cp target/pose-perfect.jar com.posemaster.SmokeTest [image] [outputDir]</pre>
+ * <p>It has no {@code @Test} methods, so Maven does not run it; launch {@code main} from an IDE
+ * with the test classpath, optionally passing {@code [image] [outputDir]}.
  */
 public final class SmokeTest {
 
@@ -40,15 +40,15 @@ public final class SmokeTest {
         ResourceLocator resources = new ResourceLocator();
         System.out.println("resource root: " + resources.root());
 
-        Path classifierModel = resources.resolve(PosePerfectApp.CLASSIFIER_MODEL);
-        Path detectorModel = resources.resolve(PosePerfectApp.PERSON_DETECTOR);
-        Path landmarkModel = resources.resolve(PosePerfectApp.POSE_LANDMARKER);
+        Path classifierModel = resources.resolve(PoseMasterApp.CLASSIFIER_MODEL);
+        Path detectorModel = resources.resolve(PoseMasterApp.PERSON_DETECTOR);
+        Path landmarkModel = resources.resolve(PoseMasterApp.POSE_LANDMARKER);
         System.out.println("classifier: " + classifierModel);
         System.out.println("detector  : " + detectorModel);
         System.out.println("landmarker: " + landmarkModel);
 
         PoseClassifier classifier = OnnxPoseClassifier.create(classifierModel,
-                resources.resolve(PosePerfectApp.LABELS));
+                resources.resolve(PoseMasterApp.LABELS));
         System.out.println("labels    : " + classifier.labels().size() + " -> " + classifier.labels());
 
         PoseDetector detector = MediapipePoseDetector.create(detectorModel, landmarkModel);

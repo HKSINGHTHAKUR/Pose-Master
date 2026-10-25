@@ -8,7 +8,7 @@ flowchart TB
         Timer --> Repaint --> Paint
     end
 
-    subgraph VT ["Vision thread<br/>(Thread daemon, \"pose-perfect-vision\")"]
+    subgraph VT ["Vision thread<br/>(Thread daemon, \"pose-master-vision\")"]
         direction TB
         Loop[while (running)<br/>visionLoop()]
         Read[camera.read()]

@@ -49,14 +49,14 @@ public final class PoseLandmarks {
     public static final int RIGHT_FOOT_INDEX = 32;
 
     /**
-     * The landmarks whose visibility the original game required to be above threshold before it
+     * The landmarks whose visibility the Python version required to be above threshold before it
      * would classify a pose: both ankles and both wrists.
      */
     public static final int[] REQUIRED_VISIBLE_LANDMARKS = {
             RIGHT_ANKLE, LEFT_ANKLE, LEFT_WRIST, RIGHT_WRIST
     };
 
-    /** Minimum visibility the original game required for the landmarks above. */
+    /** Minimum visibility the Python version required for the landmarks above. */
     public static final float VISIBILITY_THRESHOLD = 0.6f;
 
     private final List<PoseLandmark> landmarks;
@@ -78,7 +78,7 @@ public final class PoseLandmarks {
     }
 
     /**
-     * Mirrors the original game's "is the player fully in frame" test: the two ankles and the two
+     * Mirrors the Python version's "is the player fully in frame" test: the two ankles and the two
      * wrists must all be detected with sufficient confidence.
      */
     public boolean isBodyFullyVisible() {
@@ -92,7 +92,7 @@ public final class PoseLandmarks {
 
     /**
      * Builds the 66-value feature vector the classifier expects: for each landmark, its
-     * coordinates relative to the nose (landmark 0), in the original {@code x, y} interleaved
+     * coordinates relative to the nose (landmark 0), in the Python version's {@code x, y} interleaved
      * order.
      */
     public float[] toFeatureVector() {
