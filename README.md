@@ -53,6 +53,25 @@ java -jar target/pose-master.jar
 mvn test                   # tests only
 ```
 
+### Windows (PowerShell)
+
+Run these from PowerShell. First move into the project folder (the one that contains `pom.xml`); keep the quotes, because the path contains a space:
+
+```powershell
+cd "C:\Users\harsh\OneDrive\Desktop\pose perfect\Pose-Perfect"
+```
+
+Then build the project and start the game:
+
+```powershell
+& "$env:USERPROFILE\.m2\wrapper\dists\apache-maven-3.9.6-bin\3311e1d4\apache-maven-3.9.6\bin\mvn.cmd" clean package
+java -jar target\pose-master.jar
+```
+
+The first command calls Maven by its full path, which is needed when `mvn` is not on the `PATH`. If Maven is installed and on the `PATH`, `mvn clean package` does the same. On another computer, change the `cd` path to wherever the project was cloned, and the Maven path to that computer's Maven installation.
+
+Close the game before rebuilding: while it runs, Windows locks `target\pose-master.jar` and `clean` cannot delete it. Running Maven from the parent folder instead fails with "there is no POM in this directory".
+
 The build was verified with JDK 23.0.1 and Maven 3.9.9. Maven downloads dependencies on the first build; the models and assets are bundled in the JAR and nothing is downloaded at runtime.
 
 ## Models and runtime assets
