@@ -79,6 +79,8 @@ public final class GameFrame extends JFrame {
 
     private final Thread visionThread;
     private volatile boolean running = true;
+    /** Off-screen frame the screens are drawn into; only touched on the event dispatch thread. */
+    private BufferedImage backBuffer;
 
     public GameFrame(Assets assets, PoseClassifier classifier, PoseDetector detector,
                      WebcamCapture camera, HighScoreStore highScoreStore, List<String> labels) {
@@ -340,8 +342,16 @@ public final class GameFrame extends JFrame {
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2 = (Graphics2D) g.create();
+        // Render off-screen and copy the finished frame in one step: drawing straight onto the
+        // window after super.paint() had cleared it made the game flicker on every repaint.
+        double scale = ((Graphics2D) g).getTransform().getScaleX();
+        int bufferWidth = (int) Math.ceil(getWidth() * scale);
+        int bufferHeight = (int) Math.ceil(getHeight() * scale);
+        if (backBuffer == null || backBuffer.getWidth() != bufferWidth || backBuffer.getHeight() != bufferHeight) {
+            backBuffer = new BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_RGB);
+        }
+        Graphics2D g2 = backBuffer.createGraphics();
+        g2.scale(scale, scale);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         try {
@@ -358,6 +368,7 @@ public final class GameFrame extends JFrame {
             g2.drawString("Could not load a game asset: " + e.getMessage(), 20, 30);
         }
         g2.dispose();
+        g.drawImage(backBuffer, 0, 0, getWidth(), getHeight(), null);
     }
 
     private void paintHome(Graphics2D g) throws IOException {
