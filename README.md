@@ -107,6 +107,6 @@ Pose-Master/
 
 ## Licence and third-party notices
 
-The project is released under the MIT Licence; see [LICENSE](LICENSE). The trained model, labels and artwork were first published in the [NotMayankfr/Pose-Perfect](https://github.com/NotMayankfr/Pose-Perfect) repository under the MIT Licence.
+The project is released under the MIT Licence; see [LICENSE](LICENSE).
 
 Models, fonts, libraries and artwork from other sources, with their licences, are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
