@@ -61,9 +61,13 @@ public final class PoseMasterApp {
 
             SwingUtilities.invokeLater(() -> {
                 GameFrame frame = new GameFrame(assets, classifier, detector, camera, highScoreStore, labels);
+                // Drive the repaints from the event dispatch thread at the game's frame rate.
+                javax.swing.Timer timer = new javax.swing.Timer(1000 / GameFrame.FPS, e -> frame.repaint());
                 frame.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosed(java.awt.event.WindowEvent e) {
+                        // A running Timer keeps the event queue busy, so the JVM would never exit.
+                        timer.stop();
                         frame.shutdown();
                         classifier.close();
                         detector.close();
@@ -71,9 +75,6 @@ public final class PoseMasterApp {
                 });
                 frame.setVisible(true);
                 frame.start();
-
-                // Drive the repaints from the event dispatch thread at the game's frame rate.
-                javax.swing.Timer timer = new javax.swing.Timer(1000 / GameFrame.FPS, e -> frame.repaint());
                 timer.start();
             });
         } catch (IOException | ai.onnxruntime.OrtException e) {
