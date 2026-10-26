@@ -10,8 +10,7 @@ import java.nio.file.Paths;
  * Locates the game's data files.
  *
  * <p>Resources are looked up on the classpath first, so the packaged jar works from any working
- * directory.  When running from a source checkout the sibling project directory is used, which
- * keeps the repository's root-level asset layout working.
+ * directory.  When running from a source checkout {@code src/main/resources} is used.
  */
 public final class ResourceLocator {
 

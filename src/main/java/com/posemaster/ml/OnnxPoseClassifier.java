@@ -16,10 +16,7 @@ import java.util.List;
 /**
  * Classifies a pose from its MediaPipe-style landmark feature vector.
  *
- * <p>The trained Keras model shipped with the project ({@code model.h5}) was exported to ONNX by
- * {@code tools/convert_model_to_onnx.py}; {@code tools/verify_onnx.py} checks that the exported
- * graph reproduces the Keras predictions exactly.  Inference runs on ONNX Runtime, so the Java
- * application needs no Python runtime.
+ * <p>The classifier is a small dense network (66-128-64-16) stored as ONNX and run on ONNX Runtime.
  */
 public final class OnnxPoseClassifier implements PoseClassifier, AutoCloseable {
 
@@ -56,7 +53,7 @@ public final class OnnxPoseClassifier implements PoseClassifier, AutoCloseable {
             int classCount = shape.length > 1 ? (int) shape[1] : 0;
             if (classCount > 0 && classCount != labels.size()) {
                 session.close();
-                throw new IOException("Model outputs " + classCount + " classes but labels.npy holds "
+                throw new IOException("Model outputs " + classCount + " classes but labels.txt holds "
                         + labels.size());
             }
             return new OnnxPoseClassifier(environment, session, labels);

@@ -9,13 +9,12 @@ import java.nio.file.Paths;
 /**
  * Stores the player's high score.
  *
- * <p>The score is kept in {@code ~/.pose_master/high_score.txt}, the same file the Python version
- * uses.  Unlike the Python version, this class does not seed it from a bundled copy: the caller
- * supplies the fallback value (the game passes 0).
+ * <p>The score is kept in {@code ~/.pose_master/high_score.txt}.  When the file does not exist
+ * the caller supplies the fallback value (the game passes 0).
  */
 public final class HighScoreStore {
 
-    /** Directory the Python version used for per-user data. */
+    /** Directory, under the user's home, that holds per-user data. */
     public static final String USER_DIRECTORY = ".pose_master";
     /** File name of the high score file. */
     public static final String FILE_NAME = "high_score.txt";

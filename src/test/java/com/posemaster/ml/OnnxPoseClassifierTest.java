@@ -28,7 +28,7 @@ class OnnxPoseClassifierTest {
     @Test
     void loadsTheModelAndItsLabels() throws Exception {
         try (OnnxPoseClassifier classifier = OnnxPoseClassifier.create(
-                resource("models/pose_classifier.onnx"), resource("labels.npy"))) {
+                resource("models/pose_classifier.onnx"), resource("labels.txt"))) {
 
             List<String> labels = classifier.labels();
             assertEquals(16, labels.size());
@@ -40,7 +40,7 @@ class OnnxPoseClassifierTest {
     @Test
     void predictsAValidLabelForAnyInput() throws Exception {
         try (OnnxPoseClassifier classifier = OnnxPoseClassifier.create(
-                resource("models/pose_classifier.onnx"), resource("labels.npy"))) {
+                resource("models/pose_classifier.onnx"), resource("labels.txt"))) {
 
             float[] features = new float[OnnxPoseClassifier.FEATURE_COUNT];
             String label = classifier.classify(features);
@@ -53,7 +53,7 @@ class OnnxPoseClassifierTest {
     @Test
     void probabilitiesFormAValidDistribution() throws Exception {
         try (OnnxPoseClassifier classifier = OnnxPoseClassifier.create(
-                resource("models/pose_classifier.onnx"), resource("labels.npy"))) {
+                resource("models/pose_classifier.onnx"), resource("labels.txt"))) {
 
             float[] probabilities = classifier.predict(new float[OnnxPoseClassifier.FEATURE_COUNT]);
 
@@ -70,7 +70,7 @@ class OnnxPoseClassifierTest {
     @Test
     void theArgmaxLabelMatchesTheClassification() throws Exception {
         try (OnnxPoseClassifier classifier = OnnxPoseClassifier.create(
-                resource("models/pose_classifier.onnx"), resource("labels.npy"))) {
+                resource("models/pose_classifier.onnx"), resource("labels.txt"))) {
 
             float[] features = new float[OnnxPoseClassifier.FEATURE_COUNT];
             for (int i = 0; i < features.length; i++) {

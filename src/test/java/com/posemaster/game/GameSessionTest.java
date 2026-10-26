@@ -80,7 +80,7 @@ class GameSessionTest {
         String first = session.targetPose();
 
         session.update(1.0, first, true);
-        // The change takes effect on the next update, as in the Python version.
+        // The change takes effect on the next update.
         assertEquals(first, session.targetPose());
 
         session.update(1.5, null, false);

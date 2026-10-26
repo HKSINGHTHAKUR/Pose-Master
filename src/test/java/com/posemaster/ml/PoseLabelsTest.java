@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class PoseLabelsTest {
 
     private static Path labelsFile() {
-        Path direct = Paths.get("src/main/resources/labels.npy");
+        Path direct = Paths.get("src/main/resources/labels.txt");
         if (Files.isRegularFile(direct)) {
             return direct;
         }
-        return Paths.get("labels.npy");
+        return Paths.get("labels.txt");
     }
 
     @Test

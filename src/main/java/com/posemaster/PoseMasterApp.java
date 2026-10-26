@@ -22,14 +22,14 @@ import java.util.List;
  * Entry point of Pose Master.
  *
  * <p>The application loads the trained pose-classification model and the MediaPipe pose models,
- * opens the webcam and shows the game window.  No Python runtime is involved.
+ * opens the webcam and shows the game window.
  */
 public final class PoseMasterApp {
 
-    /** Classifier model, exported from {@code model.h5}. */
+    /** Pose classifier model. */
     public static final String CLASSIFIER_MODEL = "models/pose_classifier.onnx";
-    /** Pose label list, {@code labels.npy}. */
-    public static final String LABELS = "labels.npy";
+    /** Pose label list, {@code labels.txt}. */
+    public static final String LABELS = "labels.txt";
     /** MediaPipe person detector. */
     public static final String PERSON_DETECTOR = "models/person_detection_mediapipe_2023mar.onnx";
     /** MediaPipe pose landmark model. */

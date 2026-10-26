@@ -34,17 +34,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * The game's Swing window, showing the same four screens as the Python (pygame) version.
+ * The game's Swing window, showing the home, start, game and game-over screens.
  *
  * <p>Camera capture and inference run on a background thread so the event dispatch thread is
  * never blocked; the UI reads the most recent result and repaints at the target frame rate.
  */
 public final class GameFrame extends JFrame {
 
-    /** Window size, matching the Python (pygame) window. */
+    /** Window size. */
     public static final int WIDTH = 1240;
     public static final int HEIGHT = 700;
-    /** Target frame rate, matching the Python version. */
+    /** Target frame rate. */
     public static final int FPS = 30;
 
     /** The screens the game moves between. */
@@ -144,7 +144,7 @@ public final class GameFrame extends JFrame {
                 }
                 detectionFailed.set(false);
 
-                // The Python version mirrored the camera image so the player sees themselves the
+                // Mirror the camera image so the player sees themselves the
                 // right way round; the pose model is fed the same mirrored frame.
                 Mat flipped = new Mat();
                 Core.flip(frame, flipped, 1);
@@ -246,8 +246,7 @@ public final class GameFrame extends JFrame {
         }
     }
 
-    // The button geometry matches the Python (pygame) layout, so the hit boxes and the drawn
-    // buttons can never drift apart.
+    // Hit boxes and drawn buttons share this geometry, so they can never drift apart.
     private Button homeStartButton() {
         return new Button(270, 500, 300, 100, Color.BLACK, Color.WHITE, Color.WHITE, marcellus, "Start");
     }
@@ -431,7 +430,7 @@ public final class GameFrame extends JFrame {
         gameOverPlayAgainButton().draw(g);
     }
 
-    /** Matches the Python version's "time per move" figure. */
+    /** Formats the average "time per move" figure. */
     private String formatTimePerMove() {
         if (lastScore == 0) {
             return Integer.toString((int) gameOverTime);
@@ -450,7 +449,7 @@ public final class GameFrame extends JFrame {
             }
             return;
         }
-        // The Python version blitted the camera frame at its native size, at (220, 0).
+        // Draw the camera frame at its native size, at (220, 0).
         g.drawImage(frame, 220, 0, null);
     }
 

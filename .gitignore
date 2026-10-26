@@ -1,11 +1,6 @@
 # Maven build output
 target/
 
-# Python virtual environments and caches
-.venv*/
-__pycache__/
-*.pyc
-
 # IDE settings
 .idea/
 *.iml
@@ -17,6 +12,3 @@ Thumbs.db
 
 # Local secrets
 .env
-
-# tools/_probe: unreferenced scratch experiments (~37 MB of third-party demo code and model copies)
-tools/_probe/

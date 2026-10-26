@@ -2,7 +2,7 @@
 
 A real-time pose-matching game. The webcam watches you, a neural network recognises which of 16 poses you are holding, and you score points by matching the pose shown on screen before the timer runs out.
 
-The game is a Java 17 Swing desktop application. Pose detection and classification run locally through ONNX Runtime, so no Python runtime or network connection is needed to play.
+The game is a Java 17 Swing desktop application. Pose detection and classification run locally through ONNX Runtime, so no network connection is needed to play.
 
 ## How it plays
 
@@ -11,7 +11,7 @@ The game is a Java 17 Swing desktop application. Pose detection and classificati
 3. **Game**: a target pose is shown. The session lasts 60 seconds, and every matched pose adds 1.5 seconds. The target changes after 7 seconds, or immediately after a match. The body must be fully in frame (both ankles and both wrists detected with visibility of at least 0.6) before a pose is classified.
 4. **Game over**: final score, time played, high score, and average time per move; choose *Play Again* or *Main Menu*.
 
-The high score is stored in `~/.pose_master/high_score.txt` and starts at 0 when that file does not exist. The 16 poses are listed in `labels.npy`; reference images are in `poseImages/`.
+The high score is stored in `~/.pose_master/high_score.txt` and starts at 0 when that file does not exist. The 16 poses are listed in `src/main/resources/labels.txt`; reference images are in `src/main/resources/poseImages/`.
 
 ## Architecture
 
@@ -21,7 +21,7 @@ webcam frame (OpenCV)
   -> crop, rotate upright, resize to 256x256
   -> pose landmarker (MediaPipe, ONNX)          -> 33 landmarks with visibility
   -> 66-value feature vector                    -> (x, y) of every landmark relative to the nose
-  -> classifier (Dense 66-128-64-16, ONNX)      -> pose label from labels.npy
+  -> classifier (Dense 66-128-64-16, ONNX)      -> pose label from labels.txt
   -> GameSession                                -> score, timers, target pose
 ```
 
@@ -39,8 +39,8 @@ Diagrams of the architecture, data flow, game states, call sequence and threadin
 | Camera and image processing | OpenCV 4.9.0 (`org.openpnp:opencv:4.9.0-0`) |
 | Inference | ONNX Runtime 1.17.1 |
 | Pose models | MediaPipe BlazePose person detector and pose landmarker (ONNX) |
-| Classifier | Keras MLP exported to ONNX |
-| Labels | `labels.npy`, parsed directly (no NumPy needed) |
+| Classifier | Dense neural network (ONNX) |
+| Labels | `labels.txt`, one label per line |
 | Tests | JUnit 5.10.2 |
 
 ## Build and run
@@ -61,13 +61,11 @@ All of these live in `src/main/resources/` and are packaged into the JAR:
 
 | File | Purpose |
 |------|---------|
-| `models/pose_classifier.onnx` | Pose classifier (exported from `model.h5`) |
+| `models/pose_classifier.onnx` | Pose classifier |
 | `models/person_detection_mediapipe_2023mar.onnx` | MediaPipe person detector |
 | `models/pose_estimation_mediapipe_2023mar.onnx` | MediaPipe pose landmarker |
-| `labels.npy` | Names of the 16 poses |
+| `labels.txt` | Names of the 16 poses |
 | `poseImages/`, `Images/`, `Background_Images/`, `Fonts/` | Artwork and fonts |
-
-`high_score.txt` in the same folder is a copy of the Python version's seed file; the Java code does not read it.
 
 ## Project structure
 
@@ -82,22 +80,13 @@ Pose-Master/
 │   ├── ml/                          # OnnxPoseClassifier, PoseLabels, PoseClassifier
 │   ├── pose/                        # MediapipePoseDetector, PoseLandmarks, BlazePoseAnchors
 │   └── ui/                          # GameFrame, Assets, Button, TextOverlay
-├── src/main/resources/              # models, labels and artwork used by the Java game
+├── src/main/resources/              # models, labels and artwork
 ├── src/test/java/com/posemaster/    # JUnit tests, plus tools/SmokeTest (a manual headless check)
 ├── src/test/resources/              # pose.jpg and expected_landmarks.json fixtures
 ├── docs/diagrams/                   # Mermaid diagrams
-├── models/                          # copies of the two MediaPipe models, used by tools/reference_pipeline.py
-├── tools/                           # Python scripts to regenerate and check the ONNX classifier
-│   ├── convert_model_to_onnx.py     # model.h5 -> pose_classifier.onnx
-│   ├── verify_onnx.py               # compares the ONNX output with Keras
-│   ├── reference_pipeline.py        # Python reference of the pose pipeline
-│   └── requirements-*.txt           # Python dependencies for these scripts only
-├── model.h5, labels.npy             # trained Keras classifier and its labels
-├── Game.py, PoseMaster.spec, build_windows.bat/.ps1   # the Python (pygame) version
-└── Background_Images/, Fonts/, Images/, poseImages/, high_score.txt   # assets used by the Python version
+├── LICENSE
+└── THIRD_PARTY_NOTICES.md
 ```
-
-The Python version is kept alongside the Java game. It is not used by the Java build and has not been re-tested as part of this documentation. The asset folders at the root are byte-identical copies of those in `src/main/resources/`, because each version loads its own.
 
 ## Tests
 
@@ -118,6 +107,6 @@ The Python version is kept alongside the Java game. It is not used by the Java b
 
 ## Licence and third-party notices
 
-The project is released under the MIT Licence; see [LICENSE](LICENSE). The copyright line there names "Pose-Perfect Contributors" because the Python game, trained model, labels and artwork were first published in the [NotMayankfr/Pose-Perfect](https://github.com/NotMayankfr/Pose-Perfect) repository, whose history is included in this one. The Java implementation, tooling and documentation were added in this repository.
+The project is released under the MIT Licence; see [LICENSE](LICENSE). The trained model, labels and artwork were first published in the [NotMayankfr/Pose-Perfect](https://github.com/NotMayankfr/Pose-Perfect) repository under the MIT Licence.
 
 Models, fonts, libraries and artwork from other sources, with their licences, are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

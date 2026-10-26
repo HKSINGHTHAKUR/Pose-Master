@@ -14,12 +14,11 @@ import java.util.Map;
 /**
  * Loads the game's images and fonts.
  *
- * <p>All the artwork and the four bundled fonts are shared with the Python version, so both
- * versions have the same visual identity.  See {@code THIRD_PARTY_NOTICES.md} for their licenses.
+ * <p>See {@code THIRD_PARTY_NOTICES.md} for their licenses.
  */
 public final class Assets {
 
-    /** Font file names, matching the Python version's {@code Fonts} directory. */
+    /** Font file names in the {@code Fonts} resource directory. */
     public static final String FONT_MARCELLUS = "Fonts/Marcellus-Regular.ttf";
     public static final String FONT_SILKSCREEN = "Fonts/Silkscreen-Regular.ttf";
     public static final String FONT_NABLA = "Fonts/Nabla.ttf";

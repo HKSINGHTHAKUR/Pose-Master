@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 /**
- * Draws a piece of text at a fixed position, the way the Python version's {@code Text} helper did.
+ * Draws a piece of text at a fixed position.
  */
 public final class TextOverlay {
 

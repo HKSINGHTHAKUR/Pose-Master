@@ -35,7 +35,7 @@
       <version>${opencv.version}</version>
     </dependency>
 
-    <!-- ONNX Runtime: runs the pose-classification model exported from model.h5. -->
+    <!-- ONNX Runtime: runs the pose detection and classification models. -->
     <dependency>
       <groupId>com.microsoft.onnxruntime</groupId>
       <artifactId>onnxruntime</artifactId>
